@@ -3,6 +3,29 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  --pink-main: #FAC4D2;
+  --creme-main: #FFF9F0;
+}
+@layer base {
+  .bg-pinkMain {
+    background-color: var(--pink-main);
+  }
+  
+  .bg-cremeMain {
+    background-color: var(--creme-main);
+  }
+  
+  .text-pinkMain {
+    color: var(--pink-main);
+  }
+  
+  .text-cremeMain {
+    color: var(--creme-main);
+  }
+  
+  .font-istok {
+    font-family: var(--font-istok), sans-serif;
+  }
 }
 
 @theme inline {
@@ -22,5 +45,5 @@
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-istok);
 }
