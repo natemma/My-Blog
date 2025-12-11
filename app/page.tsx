@@ -14,11 +14,11 @@ export default function Home() {
           <div className="h-full flex items-center justify-between px-16">
             
             {/* Text */}
-            <div className="w-1/2 pl-8">
+            <div className="w-1/2 pl-10">
               <h1 className="text-5xl md:text-8xl lg:text-7xl font-bold text-cremeMain font-istok leading-tight">
-                <div>Your place for</div>
-                <div>inspiration and</div>
-                <div>growth</div>
+                <div>Your spot for</div>
+                <div>game news, trends and</div>
+                <div>excitement</div>
               </h1>
             </div>
             
@@ -26,7 +26,7 @@ export default function Home() {
             <div className="w-1/2 flex justify-end h-full items-center">
               <div className="relative rounded-[40px] overflow-hidden">
                 <Image
-                  src="/img/forGreet.png" 
+                  src="/img/ForGreett.jpg" 
                   alt="Inspiration and growth"
                   width={480} 
                   height={520}
