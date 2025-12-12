@@ -1,6 +1,7 @@
 import Image from "next/image";
 import {FiSearch, FiLogIn} from "react-icons/fi";
 
+
 export default function Header(){
     return(
         <header className ="w-full bg-pinkMain font-istok flex items-center justify-between px-8 py-4 shadow-sm">

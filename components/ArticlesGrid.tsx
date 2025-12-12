@@ -1,5 +1,5 @@
 import ArticleCard from "./ArticleCard";
-import {mockArticles} from "./ArticleCard";
+import { mockArticles } from "@/types/article";
 
 export default function ArticlesGrid() {
     return (
