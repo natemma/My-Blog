@@ -40,9 +40,9 @@ export default function Header(){
                     <FiSearch className="ml-2" />
                 </div>
 
-                {/* Log in */}
+                {/* Sign up */}
                 <a
-                    href="/login"
+                    href="/register"
                     className="flex items-center gap-2 text-cremeMain hover:opacity-80"
                 >
                     <FiLogIn />
