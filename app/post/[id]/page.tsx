@@ -1,8 +1,8 @@
-// app/post/[id]/page.tsx
 import Image from "next/image";
 import { notFound } from "next/navigation";
-import { FiCalendar, FiUser } from "react-icons/fi";
+import { FiCalendar, FiUser, FiMessageSquare, FiSend} from "react-icons/fi";
 import { mockArticles } from "@/types/article";
+import CommentsList from "@/components/comments/CommentsList";
 
 
 export async function generateMetadata({ params }: { params: Promise<{ id: string }> }) {
@@ -116,6 +116,9 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
             </div>
           </div>
   
+
+        {/* comments section */}
+        <CommentsList postId={postId} />  
         </main>
       </div>
     );

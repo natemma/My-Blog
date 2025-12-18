@@ -1,8 +1,34 @@
+'use client';
+import { useState, useEffect, useRef } from 'react';
 import Image from "next/image";
-import {FiSearch, FiLogIn} from "react-icons/fi";
+import {FiSearch, FiLogIn, FiChevronDown } from "react-icons/fi";
+import Link from "next/link";
 
+// categories list
+const categories = [
+    { id: 1, name: "Games", slug: "games", count: 1 },
+    { id: 2, name: "Simulator", slug: "simulator", count: 3 },
+    { id: 3, name: "Horror", slug: "horror", count: 1 },
+    { id: 4, name: "News", slug: "news", count: 1 },
+  ];
 
 export default function Header(){
+    const [isCategoriesOpen, setIsCategoriesOpen] = useState(false);
+    const dropdownRef = useRef<HTMLDivElement>(null);
+
+    // close menu 
+    useEffect(() => {
+        function handleClickOutside(event: MouseEvent) {
+        if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+            setIsCategoriesOpen(false);
+        }
+        }
+
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => document.removeEventListener('mousedown', handleClickOutside);
+    }, []);
+
+
     return(
         <header className ="w-full bg-pinkMain font-istok flex items-center justify-between px-8 py-4 shadow-sm">
 
@@ -24,7 +50,47 @@ export default function Header(){
             {/*Navigation */}
             <nav className="flex items-center gap-10 text-cremeMain font-medium text-2xl">
                 <a href="/">Home</a>
-                <a href="/categories">Categories</a>
+                 {/* Categories Dropdown */}
+                <div className="relative" ref={dropdownRef}>
+                <button
+                    onClick={() => setIsCategoriesOpen(!isCategoriesOpen)}
+                    className="flex items-center gap-2 hover:opacity-80 transition-opacity"
+                >
+                    Categories
+                    <FiChevronDown className={`transition-transform ${isCategoriesOpen ? 'rotate-180' : ''}`} />
+                </button>
+                
+                {/* Dropdown Menu */}
+                {isCategoriesOpen && (
+                    <div className="absolute top-full left-0 mt-2 w-64 bg-white rounded-xl shadow-2xl border border-gray-100 py-3 z-50">
+                    <div className="px-4 py-2 border-b border-gray-100">
+                        <h3 className="font-bold text-gray-800">All Categories</h3>
+                    </div>
+                    
+                    <div className="max-h-80 overflow-y-auto">
+                        {categories.map((category) => (
+                        <Link
+                            key={category.id}
+                            href={`/categories/${category.slug}`}
+                            onClick={() => setIsCategoriesOpen(false)}
+                            className="flex items-center justify-between px-4 py-3 hover:bg-pinkMain/10 transition-colors group"
+                        >
+                            <div className="flex items-center gap-3">
+                            <div className="w-2 h-2 rounded-full bg-pinkMain group-hover:scale-125 transition-transform"></div>
+                            <span className="text-gray-700 group-hover:text-pinkMain font-medium">
+                                {category.name}
+                            </span>
+                            </div>
+                            <span className="text-gray-400 text-sm bg-gray-100 px-2 py-1 rounded-full">
+                            {category.count}
+                            </span>
+                        </Link>
+                        ))}
+                    </div>
+                    
+                    </div>
+                )}
+                </div>
             </nav>
 
              {/*Search + LogIn */}

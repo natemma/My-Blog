@@ -22,7 +22,7 @@ export default function Home() {
               </h1>
             </div>
             
-            {/* Правая часть: Картинка */}
+            {/*image*/}
             <div className="w-1/2 flex justify-end h-full items-center">
               <div className="relative rounded-[40px] overflow-hidden">
                 <Image

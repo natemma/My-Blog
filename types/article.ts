@@ -53,7 +53,7 @@ export interface Article {
       tags: ["#simulator", "#business", "#upcoming"]
     },
     { id: 5,  
-      img: "/img/Roblox.jpg",
+      img: "/img/Rroblox.jpg",
       title: "Roblox has been blocked in the Russia", 
       description: "Roskomnadzor has imposed restrictions against the Roblox gaming platform, Interfax reports, citing the agency's press service. The reason was the identification of the facts of the mass distribution of undesirable materials such as extremist propaganda and LGBT topics. Users started reporting failures in Roblox in Russia a few weeks ago, but the most active messages about the unavailability of the game began to arrive the day before — on December 3. Roskomnadzor has stated that children in the game are subjected to sexual harassment, have their intimate photos stolen, and are encouraged to engage in depraved acts and violence. Additionally, the gaming environment contains a large amount of inappropriate content that can negatively impact children's spiritual and moral development, creating conditions and prerequisites for committing illegal actions.",
       category: "News",

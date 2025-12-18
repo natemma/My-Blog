@@ -131,14 +131,14 @@ export default function RegisterForm() {
       </div>
      
 
-      {/* Ошибка */}
+      
       {error && (
         <div className="bg-red-50 text-red-500 p-3 rounded-lg text-sm">
           {error}
         </div>
       )}
 
-      {/* Кнопка регистрации */}
+      {/* registration button */}
       <button
         type="submit"
         disabled={isLoading}
