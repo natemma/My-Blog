@@ -19,27 +19,49 @@
 ## Структура проекта
 
 My-Blog/
+
 ├── app/                            # Страницы и макеты Next.js App Router
+
 ├── components/                     # Используемые компоненты
+
       ├── auth/                     # Компоненты аутентификации
+      
            ├── LoginForm.tsx        # Форма для логина
+           
            ├── RegisterForm.tsx     # Форма для регистрации
+           
       ├── comments/                 # Компоненты комментов
+      
            ├── CommentForm.tsx      # Форма для написания нового комментарий
+           
            ├── CommentItem.tsx      # Отдельный элемент комментария 
+           
            ├── CommentList.tsx      # Контейнер для списка комментариев 
+           
       ├── ArticleCard.tsx           # Компоненты отдельной карточки поста
+      
       ├── ArticleGrid.tsx           # Сетка постов 
+      
       ├── Footer.tsx                # Футер сайта 
+      
       ├── Header.tsx                # Хэдер сайта 
+      
 ├── public/                         # Статические ресурсы (изображения и т.д.)
+
 ├── types/                          # Определения типов TypeScript
+
 ├── .gitignore                      # Конфигурация Git ignore
+
 ├── eslint.config.mjs               # Конфигурация ESLint
+
 ├── next.config.ts                  # Конфигурация Next.js
+
 ├── package.json                    # Зависимости и скрипты проекта
+
 ├── postcss.config.mjs              # Конфигурация PostCSS
+
 ├── tailwind.config.ts              # Конфигурация Tailwind CSS
+
 └── tsconfig.json                   # Конфигурация TypeScript
 
 
@@ -48,26 +70,27 @@ My-Blog/
 
 bash
 git clone https://github.com/natemma/My-Blog.git
+
 cd My-Blog
 
 2. Установить зависимости
 
 bash
 npm install
-# или используйте другой менеджер пакетов
-# yarn install
-# pnpm install
-# bun install
+#или используйте другой менеджер пакетов
+#yarn install
+#pnpm install
+#bun install
 
 3. Запустить сервер разработки
 
 bash
 npm run dev
-# или
+#или
 yarn dev
-# или
+#или
 pnpm dev
-# или
+#или
 bun dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
