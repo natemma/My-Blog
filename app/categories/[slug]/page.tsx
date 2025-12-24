@@ -1,33 +1,59 @@
 import { notFound } from "next/navigation";
 import ArticleCard from "@/components/ArticleCard";
-import { mockArticles } from "@/types/article";
-
-// slug to categories
-const categoryMap: Record<string, string> = {
-  'games': 'Games',
-  'simulator': 'Simulator',
-  'news': 'News',
-  'horror': 'Horror',
-};
+import {GetAllCategories, GetPostByCateg } from "@/lib/api";
 
 export async function generateStaticParams() {
-  return Object.keys(categoryMap).map((slug) => ({
-    slug,
-  }));
+ try {
+    // Получаем реальные категории из API
+    const categories = await GetAllCategories();
+    
+    return categories.map((category: Category) => ({
+      slug: category.slug,
+    }));
+  } catch (error) {
+    console.error('Error generating static params:', error);
+    return [];
+  }
 }
 
 export default async function CategoryPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const categoryName = categoryMap[slug];
+
   
-  if (!categoryName) {
+  const postsPromise = GetPostByCateg(slug);
+  const categoriesPromise = GetAllCategories();
+  
+  const [posts, categories] = await Promise.all([
+    postsPromise,
+    categoriesPromise
+  ]);
+  
+
+  const currentCategory = categories.find((cat: Category) => cat.slug === slug);
+  
+  if (!currentCategory) {
     notFound();
   }
 
-  // filter our articles 
-  const categoryArticles = mockArticles.filter(
-    article => article.category?.toLowerCase() === categoryName.toLowerCase()
-  );
+
+   const formattedArticles = Array.isArray(posts) ? posts.map((post: any) => ({
+    id: post.id,
+    title: post.title || "Без названия",
+    slug: post.slug || slug,
+    excerpt: post.excerpt || "",
+    content: post.content || "", // Добавьте content в GraphQL запрос если нужно
+    createdAt: post.createdAt 
+      ? new Date(post.createdAt).toLocaleDateString('ru-RU', {
+          day: 'numeric',
+          month: 'long',
+          year: 'numeric'
+        })
+      : "Не указана",
+    category: post.category?.name || "Без категории",
+    tags: post.tags || [],
+    author: post.author?.name || "Аноним",
+    image: post.image || null, // ← Обратите внимание: post.image уже содержит {url: ...}
+  })) : [];
 
   return (
     <div className="min-h-screen bg-white">
@@ -36,20 +62,20 @@ export default async function CategoryPage({ params }: { params: Promise<{ slug:
         {/* categories names */}
         <div className="text-center mb-12">
           <div className="inline-block bg-pinkMain text-white px-6 py-2 rounded-full text-lg font-medium mb-4">
-            {categoryName}
+            {currentCategory.name}
           </div>
           <h1 className="text-4xl md:text-5xl font-bold text-gray-800 font-istok mb-4">
-            {categoryName} Articles
+            {currentCategory.name} Articles
           </h1>
           <p className="text-gray-600 text-lg">
-            {categoryArticles.length} articles in this category
+            {formattedArticles.length} articles in this category
           </p>
         </div>
 
         {/* articles list */}
-        {categoryArticles.length > 0 ? (
+        {formattedArticles.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-            {categoryArticles.map((article) => (
+            {formattedArticles.map((article: Article) => (
               <ArticleCard key={article.id} article={article} />
             ))}
           </div>

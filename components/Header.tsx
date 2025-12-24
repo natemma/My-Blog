@@ -3,19 +3,23 @@ import { useState, useEffect, useRef } from 'react';
 import Image from "next/image";
 import {FiSearch, FiLogIn, FiChevronDown } from "react-icons/fi";
 import Link from "next/link";
+import { GetAllCategories } from '@/lib/api';
 
-// categories list
-const categories = [
-    { id: 1, name: "Games", slug: "games", count: 1 },
-    { id: 2, name: "Simulator", slug: "simulator", count: 3 },
-    { id: 3, name: "Horror", slug: "horror", count: 1 },
-    { id: 4, name: "News", slug: "news", count: 1 },
-  ];
 
 export default function Header(){
     const [isCategoriesOpen, setIsCategoriesOpen] = useState(false);
+    const [categories, setCategories] = useState<Category[]>([]);
     const dropdownRef = useRef<HTMLDivElement>(null);
+    
+     useEffect(() => {
+  async function fetchCategories() {
+    const res = await fetch('/api/categories');
+    const data = await res.json();
+    setCategories(data);
+  }
 
+  fetchCategories();
+}, []);
     // close menu 
     useEffect(() => {
         function handleClickOutside(event: MouseEvent) {
@@ -68,7 +72,7 @@ export default function Header(){
                     </div>
                     
                     <div className="max-h-80 overflow-y-auto">
-                        {categories.map((category) => (
+                        {categories.map((category: Category ) => (
                         <Link
                             key={category.id}
                             href={`/categories/${category.slug}`}
@@ -82,7 +86,7 @@ export default function Header(){
                             </span>
                             </div>
                             <span className="text-gray-400 text-sm bg-gray-100 px-2 py-1 rounded-full">
-                            {category.count}
+                            {category.postsCount}
                             </span>
                         </Link>
                         ))}

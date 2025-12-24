@@ -1,14 +1,14 @@
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import { FiCalendar, FiUser, FiMessageSquare, FiSend} from "react-icons/fi";
-import { mockArticles } from "@/types/article";
 import CommentsList from "@/components/comments/CommentsList";
+import { GetOnePost } from "@/lib/api";
 
 
-export async function generateMetadata({ params }: { params: Promise<{ id: string }> }) {
-    const { id } = await params;
-    const postId = parseInt(id);
-    const post = mockArticles.find(article => article.id === postId);
+export async function generateMetadata({ params, }: { params: Promise<{ slug: string }> }) {
+    const { slug } = await params;
+    const post = await GetOnePost(slug);
+    console.log('PostPage: post data:', post);
     
     if (!post) {
       return {
@@ -19,21 +19,17 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
     
     return {
       title: `${post.title} | MY BLOG`,
-      description: post.description,
+      description: post.excerpt,
     };
   }
   
-  export default async function PostPage({ params }: { params: { id: string } }) {
-    //  get id from params with await
-        const { id } = await params;
-        const postId = parseInt(id);
-        
-        // get post
-        const post = mockArticles.find(article => article.id === postId);
-        
-        if (!post) {
-            notFound();
-        }
+  export default async function PostPage({ params, }: { params: Promise<{ slug: string }> }) {
+    const { slug } = await params;
+    const post = await GetOnePost(slug);
+
+    if (!post) {
+        notFound();    
+    }    
   
     return (
       <div className="min-h-screen bg-white">
@@ -66,15 +62,16 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
   
           {/* description */}
           <p className="text-xl text-gray-700 mb-10 leading-relaxed border-l-4 border-pinkMain pl-4 py-2">
-            {post.description}
+            {post.excerpt}
           </p>
   
           {/* photo */}
           <div className="relative w-full h-[400px] md:h-[500px] rounded-2xl overflow-hidden mb-10">
             <Image
-              src={post.img}
-              alt={post.title}
+              src={post.image?.url ? `http://localhost:3001${post.image.url}` : "/images.jpg"}
+              alt={post.title|| "Blog post image"}
               fill
+              unoptimized
               className="object-cover"
               priority
             />
@@ -91,34 +88,20 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
           </article>
   
           {/* tags */}
-          <div className="mb-12">
-            <div className="flex flex-wrap gap-3">
-              {post.tags?.map((tag, index) => (
-                <span 
-                  key={index}
-                  className="bg-pinkMain/10 text-pinkMain px-4 py-2 rounded-full hover:bg-pinkMain hover:text-white transition-colors cursor-pointer"
-                >
-                  {tag}
-                </span>
-              )) || (
-                <>
-                  <span className="bg-pinkMain/10 text-pinkMain px-4 py-2 rounded-full">
-                    #gaming
-                  </span>
-                  <span className="bg-pinkMain/10 text-pinkMain px-4 py-2 rounded-full">
-                    #news
-                  </span>
-                  <span className="bg-pinkMain/10 text-pinkMain px-4 py-2 rounded-full">
-                    #update
-                  </span>
-                </>
-              )}
-            </div>
-          </div>
+          <div className="flex gap-3 flex-wrap mb-12">
+          {post.tags?.map((tag:{name: string}, i:number) => (
+            <span
+              key={i}
+              className="px-4 py-2 rounded-full bg-pinkMain/10 text-pinkMain"
+            >
+              #{tag.name}
+            </span>
+          ))}
+        </div>
   
 
         {/* comments section */}
-        <CommentsList postId={postId} />  
+        <CommentsList postId={post.id} />  
         </main>
       </div>
     );
